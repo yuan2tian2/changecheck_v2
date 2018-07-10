@@ -1,0 +1,8 @@
+target/
+work/
+lib/
+*.class
+*.jar
+*.ser
+gitlog.txt
+config.xml
