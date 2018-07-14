@@ -87,7 +87,7 @@ public class MailReporter implements IResultReporter
             Authenticator auth = new AuthenticatorImpl(from, password);
             session = smtpAuth ? Session.getInstance(props, auth) : Session.getInstance(props);
             MimeMessage message = editMessage(session, modifyMap);
-            Transport.send(message);
+            sendMessage(message);
         }
         catch(AuthenticationFailedException e)
         {
@@ -97,6 +97,16 @@ public class MailReporter implements IResultReporter
         {
             throw new IOException(e);
         }
+    }
+    //----------------------------------------------------------------------------------------------
+    /**
+     * メッセージをSMTPサーバへ送信する
+     * @param message メールメッセージオブジェクト
+     * @throws MessagingException 送信失敗
+     */
+    protected void sendMessage(MimeMessage message) throws MessagingException
+    {
+        Transport.send(message);
     }
     //----------------------------------------------------------------------------------------------
     /**
@@ -213,57 +223,5 @@ public class MailReporter implements IResultReporter
     public void setSubject(final String arg)
     {
         subject = arg;
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 認証実装クラス
-     * @author はらだ　たかひこ
-     */
-    class AuthenticatorImpl extends Authenticator
-    {
-        /** メールアドレス */
-        protected String email;
-        
-        /** パスワード */
-        protected String passwd;
-        //------------------------------------------------------------------------------------------
-        /**
-         * コンストラクタ
-         * @param email メールアドレス
-         * @param passwd パスワード
-         */
-        public AuthenticatorImpl(String email, String passwd)
-        {
-            setEmail(email);
-            setPassword(passwd);
-        }
-        //------------------------------------------------------------------------------------------
-        /**
-         * PasswordAuthenticationオブジェクトを取得する
-         * @return PasswordAuthenticationオブジェクト
-         */
-        @Override
-        protected PasswordAuthentication getPasswordAuthentication()
-        {
-            return new PasswordAuthentication(email, passwd);
-        }
-        //------------------------------------------------------------------------------------------
-        /**
-         * 電子メールをセットする
-         * @param arg 電子メールアドレス
-         */
-        public void setEmail(final String arg)
-        {
-            email = arg;
-        }
-        //------------------------------------------------------------------------------------------
-        /**
-         * パスワードをセットする
-         * @param arg パスワード
-         */
-        public void setPassword(final String arg)
-        {
-            passwd = arg;
-        }
     }
 }
