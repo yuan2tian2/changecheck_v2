@@ -1,12 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // (C) Copyright HARADA, Takahiko 2018 All rights reserved.
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.haradatakahiko.security;
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 import java.nio.file.Path;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * ハッシュ値計算インタフェース
  * @author はらだ　たかひこ
@@ -20,7 +20,7 @@ public interface IHashMaker
      * @throws NoSuchAlgorithmException 不正アルゴリズム
      */
     byte[] hash(Path path) throws IOException, NoSuchAlgorithmException;
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
     /**
      * バイト配列を16進数文字列に変換する
      * @param byteArray バイト配列
@@ -35,7 +35,12 @@ public interface IHashMaker
         StringBuilder sb = new StringBuilder();
         for(byte b : byteArray)
         {
-            sb.append(Integer.toHexString(0xFF & (int)b));
+            String hexChar = Integer.toHexString(0xFF & (int)b);
+            if(hexChar.length() == 1)
+            {
+                sb.append("0");
+            }
+            sb.append(hexChar);
         }
         return sb.toString();
     }
