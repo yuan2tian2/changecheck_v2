@@ -34,7 +34,7 @@ public class MailReporter implements IResultReporter
     private static final Logger LOGGER = LoggerFactory.getLogger(MailReporter.class);
     
     /** 文字コード */
-    private static final String ENCODING = "UTF-8";
+    public static final String ENCODING = "UTF-8";
     
     /** SMTPのプロパティ */
     protected Properties props = new Properties();

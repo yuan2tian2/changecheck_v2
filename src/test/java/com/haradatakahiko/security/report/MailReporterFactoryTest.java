@@ -15,6 +15,9 @@ import org.junit.Test;
  */
 public class MailReporterFactoryTest
 {
+    /** 件名 */
+    public static final String SUBJECT = "[subject]test";
+    
     /** テスト用メールアドレス */
     public static final String AUTHORS_EMAIL = "harada.takahiko.factory@gmail.com";
     //----------------------------------------------------------------------------------------------
@@ -39,7 +42,8 @@ public class MailReporterFactoryTest
         Map<String, String> map = new HashMap<>();
         map.put("from", AUTHORS_EMAIL);
         map.put("subject", "[subject]test");
-        map.put("to", AUTHORS_EMAIL);
+        map.put("to", "to@gmail.com");
+        map.put("cc", "cc@gmail.com," + AUTHORS_EMAIL);
         map.put("password", "**********");
         map.put("port", "25");
         map.put("smtp", "smtp.google.com");

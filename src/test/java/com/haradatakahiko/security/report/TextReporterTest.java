@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,8 +30,8 @@ public class TextReporterTest
     /**
      * 後始末
      */
-    @AfterClass
-    public static void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         Files.deleteIfExists(Paths.get(TEST_REPORT));
     }
@@ -68,9 +68,8 @@ public class TextReporterTest
         final String MESSAGE = "出力ファイルをオープンできること";
         Path path = Paths.get(TEST_REPORT);
         Map<String, ModifyType> map = createDummyMap();
-        try(TextReporter reporter = new TextReporter(path))
-        {
-        }
+        TextReporter reporter = new TextReporter(path);
+        reporter.close();
         Assert.assertTrue(MESSAGE, Files.exists(path));
     }
     //----------------------------------------------------------------------------------------------
@@ -120,7 +119,7 @@ public class TextReporterTest
      * テスト用のパラメータMapを構築する
      * @return テスト用のパラメータMap
      */
-    private Map<String, ModifyType> createDummyMap()
+    public static Map<String, ModifyType> createDummyMap()
     {
         Map<String, ModifyType> map = new HashMap<>();
         map.put("/var/log/modify", ModifyType.MODIFY);
