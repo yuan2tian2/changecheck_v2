@@ -10,7 +10,7 @@ import org.junit.Test;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * IReporterFactoryインタフェースのテスト
- * @author 久保　由仁
+ * @author はらだ　たかひこ
  */
 public class IReporterFactoryTest
 {
