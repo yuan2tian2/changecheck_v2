@@ -82,7 +82,6 @@ public class MailReporter implements IResultReporter
         try
         {
             LOGGER.info(from);
-            LOGGER.info(password);
             boolean smtpAuth = TRUE_STRING.equals(props.getProperty("mail.smtp.auth"));
             Authenticator auth = new AuthenticatorImpl(from, password);
             session = smtpAuth ? Session.getInstance(props, auth) : Session.getInstance(props);
