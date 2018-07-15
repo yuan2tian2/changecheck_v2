@@ -46,7 +46,7 @@ public final class FileChangeChecker
     private static FileChangeChecker instance = new FileChangeChecker();
     
     /** 設定ファイルXmlドキュメント */
-    protected XmlDocument config = new XmlDocument();
+    protected XmlDocument config = null;
     
     /** 変更内容のMap */
     protected Map<String, ModifyType> modifyMap = new HashMap<>();
@@ -100,9 +100,9 @@ public final class FileChangeChecker
      */
     protected void configure(final String configPath) throws IOException, NoSuchAlgorithmException
     {
-        getConfig(configPath);
+        config = getConfig(configPath);
         hashMaker = configureHashMaker();
-        Set<String> ignoreSet = getIgnoreSet();
+        Set<String> ignoreSet = getIgnoreSet(config);
         result.setDataFile(getConfigValue("/config/data/file"));
         result.importResult();
         result.setIgnoreExtensionSet(ignoreSet);
@@ -113,12 +113,12 @@ public final class FileChangeChecker
      * @return 対象外ファイルの拡張子セット
      * @throws IOException 読込エラー
      */
-    protected Set<String> getIgnoreSet() throws IOException
+    public Set<String> getIgnoreSet(XmlDocument xml) throws IOException
     {
         Set<String> ignoreExtSet = new HashSet<>();
         try
         {
-            IterableNodeList nodeList = config.getNodeList("/config/ignores/extension");
+            IterableNodeList nodeList = xml.getNodeList("/config/ignores/extension");
             for(Node node : nodeList)
             {
                 String extension = XmlDocument.getNodeText(node);
@@ -190,8 +190,12 @@ public final class FileChangeChecker
      * @throws IOException 読込エラー
      * @throws NoSuchAlgorithmException 不正アルゴリズム
      */
-    private void checkHash(Path path) throws IOException, NoSuchAlgorithmException
+    public String checkHash(Path path) throws IOException, NoSuchAlgorithmException
     {
+        if(path == null)
+        {
+            return null;
+        }
         Path absolutePath = path.toAbsolutePath();
         byte[] hashValue = hashMaker.hash(absolutePath);
         String hashString = IHashMaker.toHexString(hashValue);
@@ -202,6 +206,7 @@ public final class FileChangeChecker
             modifyMap.put(absolutePath.toString(), modifyType);
         }
         LOGGER.debug(String.format("[%s] : %s", modifyType.toString(), absolutePath.toString()));
+        return hashString;
     }
     //----------------------------------------------------------------------------------------------
     /**
@@ -222,6 +227,10 @@ public final class FileChangeChecker
      */
     public String getConfigValue(String xpath)
     {
+        if(config == null)
+        {
+            throw new IllegalStateException("設定ファイルが読込まれていません。");
+        }
         try
         {
             return config.getNodeText(xpath);
@@ -237,13 +246,15 @@ public final class FileChangeChecker
      * @param configPath 設定ファイルのパス
      * @throws IOException 読み込みエラー
      */
-    protected void getConfig(final String configPath) throws IOException
+    protected XmlDocument getConfig(final String configPath) throws IOException
     {
         LOGGER.info(String.format("設定ファイル：%s", configPath));
+        XmlDocument conf = new XmlDocument();
         try(InputStream stream =  new FileInputStream(configPath))
         {
-            config.load(stream);
+            conf.load(stream);
         }
+        return conf;
     }
     //----------------------------------------------------------------------------------------------
     /**
@@ -253,6 +264,15 @@ public final class FileChangeChecker
     public XmlDocument getConfigXml()
     {
         return config;
+    }
+    //----------------------------------------------------------------------------------------------
+    /**
+     * 設定XMLドキュメントオブジェクトをセットする
+     * @param arg 設定XMLドキュメントオブジェクト
+     */
+    public void setConfigXml(final XmlDocument arg)
+    {
+        config = arg;
     }
     //----------------------------------------------------------------------------------------------
     /**
