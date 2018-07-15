@@ -16,13 +16,13 @@ import org.junit.Test;
 public class SimpleHashMakerTest
 {
     /** テストに用いるファイル1 */
-    private static final String EXAMPLE_FILE1 = "lib/log4j-core-2.11.0.pom";
+    public static final String EXAMPLE_FILE1 = "lib/log4j-core-2.11.0.pom";
     
     /** テストに用いるファイル2 */
-    private static final String EXAMPLE_FILE2 = "lib/log4j-jcl-2.11.0.pom";
+    public static final String EXAMPLE_FILE2 = "lib/log4j-jcl-2.11.0.pom";
     
     /** テストに使用するアルゴリズム */
-    private static final String ALGORITHM = "SHA-256";
+    public static final String ALGORITHM = "SHA-256";
     //----------------------------------------------------------------------------------------------
     /**
      * SHA-1アルゴリズムでSimpleHashMakerオブジェクトが作成できること

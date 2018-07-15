@@ -74,6 +74,7 @@ public class ResultTable<K, V> implements Serializable
         V oldValue = map.get(path);
         if(oldValue == null)
         {
+            map.put(path, hash);
             return ModifyType.ADD;
         }
         map.remove(path);

@@ -156,6 +156,12 @@ public final class FileChangeChecker
         }
     }
     //----------------------------------------------------------------------------------------------
+    /**
+     * ディレクトリを再帰的にチェックする
+     * @param path チェック対象
+     * @throws IOException 読込エラー
+     * @throws NoSuchAlgorithmException 不正なハッシュ関数アルゴリズムが指定された
+     */
     private void walk(Path path) throws IOException, NoSuchAlgorithmException
     {
         if(path == null || !Files.exists(path))
