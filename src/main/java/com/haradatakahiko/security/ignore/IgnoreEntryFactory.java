@@ -57,8 +57,8 @@ public class IgnoreEntryFactory
                 entity = new FileExtensionIgnoreEntry(path, ignoreType);
                 break;
             case DIRECTORY :
-                throw new IllegalArgumentException("未実装です");
-                //break;
+                entity = new DirectoryIgnoreEntry(path, ignoreType);
+                break;
             case REGULAR_EXPRESSION :
                 throw new IllegalArgumentException("未実装です");
                 //break

@@ -3,6 +3,7 @@
     <ignores>
         <ignore type="extension">log</ignore>
         <ignore type="extension">class</ignore>
+        <ignore type="directory">.git</ignore>
     </ignores>
     <data>
         <algorithm>SHA-512</algorithm>

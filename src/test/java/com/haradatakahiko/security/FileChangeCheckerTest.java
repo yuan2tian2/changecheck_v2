@@ -35,7 +35,8 @@ public class FileChangeCheckerTest
     {
         FileExtensionIgnoreEntry log = new FileExtensionIgnoreEntry("log", IgnoreType.EXTENSION);
         FileExtensionIgnoreEntry cls = new FileExtensionIgnoreEntry("class", IgnoreType.EXTENSION);
-        EXPECTS = new AbstractIgnoreEntry[]{log, cls};
+        FileExtensionIgnoreEntry git = new FileExtensionIgnoreEntry(".git", IgnoreType.DIRECTORY);
+        EXPECTS = new AbstractIgnoreEntry[]{log, cls, git};
     }
     //----------------------------------------------------------------------------------------------
     /**
