@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <ignores>
+        <ignore type="extension">log</ignore>
+        <ignore type="extension">class</ignore>
+        <ignore type="directory">.git</ignore>
+    </ignores>
+    <data>
+        <algorithm>SHA-512</algorithm>
+        <file>example.ser</file>
+    </data>
+    <report>
+        <!-- TEXT|MAIL|NULL  -->
+        <type>MAIL</type>
+        <file>work/result.txt</file>
+        <smtp>smtp.gmail.com</smtp>
+        <port>465</port>
+        <timeout>30000</timeout>
+        <smtpauth>true</smtpauth>
+        <password>PASSWORD</password>
+        <from>from@gmail.com</from>
+        <to>to@gmail.com</to>
+        <cc></cc>
+        <subject>[TEST]ファイル変更チェックレポート</subject>
+    </report>
+    <targets>
+        <target>changecheck</target>
+    </targets>
+</config>

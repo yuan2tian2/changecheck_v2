@@ -27,14 +27,17 @@ public class MailReporterFactory implements IReporterFactory
     public IResultReporter createReporter(Map<String, String> params) throws IOException
     {
         MailReporter reporter = new MailReporter();
-        reporter.setProperties(createProperties(params));
-        reporter.setFrom(params.get("from"));
-        reporter.setPassword(params.get("password"));
-        reporter.setSubject(params.get("subject"));
-        String toString = params.get("to");
-        reporter.setTo((toString != null) ? toString.split(",") : new String[0]);
-        String ccString = params.get("cc");
-        reporter.setCc((ccString != null) ? ccString.split(",") : new String[0]);
+        if(params != null)
+        {
+            reporter.setProperties(createProperties(params));
+            reporter.setFrom(params.get("from"));
+            reporter.setPassword(params.get("password"));
+            reporter.setSubject(params.get("subject"));
+            String toString = params.get("to");
+            reporter.setTo((toString != null) ? toString.split(",") : new String[0]);
+            String ccString = params.get("cc");
+            reporter.setCc((ccString != null) ? ccString.split(",") : new String[0]);
+        }
         return reporter;
     }
     //----------------------------------------------------------------------------------------------
@@ -46,6 +49,10 @@ public class MailReporterFactory implements IReporterFactory
     protected Properties createProperties(Map<String, String> params)
     {
         final String SSL_PORT = "465";
+        if(params == null)
+        {
+            return null;
+        }
         boolean isSsl = SSL_PORT.equals(params.get("port"));
         Properties props = new Properties();
         props.setProperty("mail.smtp.host", params.get("smtp"));

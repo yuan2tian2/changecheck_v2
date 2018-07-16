@@ -73,12 +73,12 @@ public class MailReporter implements IResultReporter
     public void report(Map<String, ModifyType> modifyMap) throws IOException
     {
         final String TRUE_STRING = "true";
-        Session session = null;
-        LOGGER.info(String.format("map件数：%d", modifyMap.size()));
-        if(modifyMap.size() == 0)
+        if(modifyMap == null || modifyMap.size() == 0)
         {
             return;
         }
+        LOGGER.info(String.format("map件数：%d", modifyMap.size()));
+        Session session = null;
         try
         {
             LOGGER.info(from);
@@ -119,6 +119,10 @@ public class MailReporter implements IResultReporter
     protected MimeMessage editMessage(Session session, Map<String, ModifyType> modifyMap) 
                                            throws MessagingException, UnsupportedEncodingException
     {
+        if(session == null || modifyMap == null)
+        {
+            throw new IllegalArgumentException("引数がnullです");
+        }
         final String RECORD_FORMAT = "[%s]\t%s\r\n";
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
@@ -144,6 +148,10 @@ public class MailReporter implements IResultReporter
     protected void addRecipients(MimeMessage message, final Message.RecipientType type, 
                                                final  String[] addresses) throws MessagingException
     {
+        if(message == null || addresses == null)
+        {
+            throw new IllegalArgumentException("引数がnullです。");
+        }
         for(String recipient : addresses)
         {
             if(recipient.equals(""))

@@ -112,6 +112,10 @@ public final class App
      */
     private Map<String, String> getReportParams(XmlDocument xml) throws XPathExpressionException
     {
+        if(xml == null)
+        {
+            return null;
+        }
         Map<String, String> params = new HashMap<>();
         Node parentNode = xml.getSingleNode("/config/report");
         IterableNodeList children = new IterableNodeList(parentNode.getChildNodes());
@@ -134,21 +138,24 @@ public final class App
     {
         boolean isModified = false;
         Map<ModifyType, Integer> countMap = new HashMap<>();
-        Iterator<Map.Entry<String, ModifyType>> iterator = modifyMap.entrySet().iterator();
-        for(Map.Entry<String, ModifyType> entry : modifyMap.entrySet())
+        if(modifyMap != null)
         {
-            ModifyType modify = entry.getValue();
-            if(modify == ModifyType.SAME || modify == ModifyType.IGNORE)
+            Iterator<Map.Entry<String, ModifyType>> iterator = modifyMap.entrySet().iterator();
+            for(Map.Entry<String, ModifyType> entry : modifyMap.entrySet())
             {
-                continue;
+                ModifyType modify = entry.getValue();
+                if(modify == ModifyType.SAME || modify == ModifyType.IGNORE)
+                {
+                    continue;
+                }
+                isModified = true;
+                int count = countMap.getOrDefault(modify, 0);
+                countMap.put(modify, ++count);
             }
-            isModified = true;
-            int count = countMap.getOrDefault(modify, 0);
-            countMap.put(modify, ++count);
-        }
-        if(isModified)
-        {
-            LOGGER.warn("ファイルの変更が検知されました。");
+            if(isModified)
+            {
+                LOGGER.warn("ファイルの変更が検知されました。");
+            }
         }
         return countMap;
     }
@@ -159,9 +166,12 @@ public final class App
      */
     protected void writeSummary(Map<ModifyType, Integer> summaryMap)
     {
-        for(Map.Entry<ModifyType, Integer> entry : summaryMap.entrySet())
+        if(summaryMap != null)
         {
-            LOGGER.info(String.format("[%s] : %d件", entry.getKey(), entry.getValue()));
+            for(Map.Entry<ModifyType, Integer> entry : summaryMap.entrySet())
+            {
+                LOGGER.info(String.format("[%s] : %d件", entry.getKey(), entry.getValue()));
+            }
         }
     }
 }

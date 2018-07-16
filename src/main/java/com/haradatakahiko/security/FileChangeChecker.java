@@ -119,6 +119,10 @@ public final class FileChangeChecker
      */
     public Set<AbstractIgnoreEntry> getIgnoreSet(XmlDocument xml) throws IOException
     {
+        if(xml == null)
+        {
+            return null;
+        }
         Set<AbstractIgnoreEntry> ignoreExtSet = new HashSet<>();
         IgnoreEntryFactory factory = IgnoreEntryFactory.getInstance();
         try
@@ -214,6 +218,9 @@ public final class FileChangeChecker
     //----------------------------------------------------------------------------------------------
     /**
      * ハッシュ計算エンジンの設定を行う
+     * @return ハッシュ計算エンジン
+     * @throws IOException 読込エラー
+     * @throws NoSuchAlgorithmException 非対応アルゴリズムが指定された
      */
     protected IHashMaker configureHashMaker() throws IOException, NoSuchAlgorithmException
     {
