@@ -5,6 +5,7 @@ package com.haradatakahiko.security;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import com.haradatakahiko.security.ignore.AbstractIgnoreEntry;
 import com.haradatakahiko.security.ignore.FileExtensionIgnoreEntry;
+import com.haradatakahiko.security.ignore.IgnoreEntryFactory;
 import com.haradatakahiko.security.ignore.IgnoreType;
 import com.haradatakahiko.security.util.IterableNodeList;
 import com.haradatakahiko.security.util.XmlDocument;
@@ -119,18 +120,17 @@ public final class FileChangeChecker
     public Set<AbstractIgnoreEntry> getIgnoreSet(XmlDocument xml) throws IOException
     {
         Set<AbstractIgnoreEntry> ignoreExtSet = new HashSet<>();
+        IgnoreEntryFactory factory = IgnoreEntryFactory.getInstance();
         try
         {
-            IterableNodeList nodeList = xml.getNodeList("/config/ignores/extension");
+            IterableNodeList nodeList = xml.getNodeList("/config/ignores/ignore");
             for(Node node : nodeList)
             {
                 String extension = XmlDocument.getNodeText(node);
-                if(!extension.startsWith("."))
-                {
-                    extension = "." + extension;
-                }
-                LOGGER.info(String.format("対象外拡張子：%s", extension));
-                ignoreExtSet.add(new FileExtensionIgnoreEntry(extension, IgnoreType.EXTENSION));
+                String typeProperty = XmlDocument.getAttribute(node, "type");
+                AbstractIgnoreEntry entry = factory.getIgnoreEntry(extension, typeProperty);
+                LOGGER.info(String.format("無視設定：%s", entry));
+                ignoreExtSet.add(entry);
             }
         }
         catch(XPathExpressionException e)
