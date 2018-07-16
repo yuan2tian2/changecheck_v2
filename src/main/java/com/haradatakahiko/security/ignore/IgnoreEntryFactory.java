@@ -46,8 +46,7 @@ public class IgnoreEntryFactory
     {
         if(path == null || type == null)
         {
-            final String MESSAGE = "パラメータがnullです。path: %s , type:  %s";
-            throw new IllegalArgumentException(String.format(path, type));
+            throw new IllegalArgumentException("パラメータがnullです");
         }
         IgnoreType ignoreType = IgnoreType.valueOf(type.toUpperCase());
         AbstractIgnoreEntry entity = null;

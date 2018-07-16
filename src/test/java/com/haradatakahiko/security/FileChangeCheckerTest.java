@@ -144,12 +144,12 @@ public class FileChangeCheckerTest
     /**
      * ハッシュ値(SHA-256)を正しく計算できること
      */
-    //@Test
+    @Test
     public void checkHashWithNormalTest() throws Exception
     {
         final String MESSAGE = "ハッシュ値(SHA-512)を正しく計算できること";
-        final String EXPECT = "b93d21685ca6e79039febb1f8bb267c81ee2f3937360f7a1f9f3f39ea9eca11fd3c"
-                            + "57ab446ec723345844a21e0f21418a5b5437ee163f6e5c017504900c3e177";
+        final String EXPECT = "8673747a5f2ca4719093618bb74856c44b87c128e17e08bfaf6a4fabf92913f"
+                        + "b01e0d3ad829b472f6e4568c6b0b0d00c3f24bff02b9d1ae58871ad68604e40ca";
         FileChangeChecker checker = FileChangeChecker.getInstance();
         Object result = invokeConfigure(checker, TEST_CONFIG);
         String actual = checker.checkHash(Paths.get(TEST_CONFIG));

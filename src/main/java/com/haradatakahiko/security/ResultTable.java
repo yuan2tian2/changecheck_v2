@@ -156,7 +156,7 @@ public class ResultTable<K, V> implements Serializable
         String pathString = path.toString();
         for(AbstractIgnoreEntry ext : ignoreExtensionSet)
         {
-            if(ext.shoudIgnore(pathString))
+            if(ext.shouldIgnore(pathString))
             {
                 return true;
             }

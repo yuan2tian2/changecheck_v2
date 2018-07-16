@@ -25,7 +25,7 @@ public abstract class AbstractIgnoreEntry implements Serializable
      * @param arg チェック対象のパス
      * @return 判定結果(true:無視する, false:無視しない)
      */
-    public abstract boolean shoudIgnore(final String arg);
+    public abstract boolean shouldIgnore(final String arg);
     //----------------------------------------------------------------------------------------------
     /**
      * ディフォルトコンストラクタ
@@ -67,6 +67,10 @@ public abstract class AbstractIgnoreEntry implements Serializable
         if(!(anotherObj instanceof AbstractIgnoreEntry))
         {
             return false;
+        }
+        if(this == anotherObj)
+        {
+            return true;
         }
         AbstractIgnoreEntry another = (AbstractIgnoreEntry)anotherObj;
         return (path.equals(another.getPath()) && type == another.getIgnoreType());

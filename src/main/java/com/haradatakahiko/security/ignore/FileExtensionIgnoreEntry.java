@@ -25,6 +25,15 @@ public class FileExtensionIgnoreEntry extends AbstractIgnoreEntry implements Ser
     /**
      * コンストラクタ
      * @param path パス
+     */
+    public FileExtensionIgnoreEntry(String path)
+    {
+        this(path, IgnoreType.EXTENSION);
+    }
+    //----------------------------------------------------------------------------------------------
+    /**
+     * コンストラクタ
+     * @param path パス
      * @param type 無視するタイプ
      */
     public FileExtensionIgnoreEntry(String path, IgnoreType type)
@@ -38,7 +47,7 @@ public class FileExtensionIgnoreEntry extends AbstractIgnoreEntry implements Ser
      * @return 判定結果(true:無視する, false:無視しない)
      */
     @Override
-    public boolean shoudIgnore(final String arg)
+    public boolean shouldIgnore(final String arg)
     {
         if(arg == null)
         {

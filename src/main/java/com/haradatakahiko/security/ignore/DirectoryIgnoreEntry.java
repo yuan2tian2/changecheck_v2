@@ -26,6 +26,15 @@ public class DirectoryIgnoreEntry extends AbstractIgnoreEntry implements Seriali
     /**
      * コンストラクタ
      * @param path パス
+     */
+    public DirectoryIgnoreEntry(String path)
+    {
+        this(path, IgnoreType.DIRECTORY);
+    }
+    //----------------------------------------------------------------------------------------------
+    /**
+     * コンストラクタ
+     * @param path パス
      * @param type 無視するタイプ
      */
     public DirectoryIgnoreEntry(String path, IgnoreType type)
@@ -39,7 +48,7 @@ public class DirectoryIgnoreEntry extends AbstractIgnoreEntry implements Seriali
      * @return 判定結果(true:無視する, false:無視しない)
      */
     @Override
-    public boolean shoudIgnore(final String arg)
+    public boolean shouldIgnore(final String arg)
     {
         Path ignorePath = Paths.get(path);
         Iterator<Path> iterator = Paths.get(arg).iterator();
