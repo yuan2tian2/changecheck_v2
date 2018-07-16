@@ -3,6 +3,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.haradatakahiko.security;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+import com.haradatakahiko.security.ignore.AbstractIgnoreEntry;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,7 +28,7 @@ public class ResultTable<K, V> implements Serializable
     protected Map<K, V> map = new HashMap<>();
     
     /** 無視する拡張子セット */
-    protected Set<String> ignoreExtensionSet;
+    protected Set<AbstractIgnoreEntry> ignoreExtensionSet;
     
     /** データファイルのパス */
     protected String dataFile = "datafile.ser";
@@ -152,9 +154,9 @@ public class ResultTable<K, V> implements Serializable
             return false;
         }
         String pathString = path.toString();
-        for(String ext : ignoreExtensionSet)
+        for(AbstractIgnoreEntry ext : ignoreExtensionSet)
         {
-            if(pathString.endsWith(ext))
+            if(ext.shoudIgnore(pathString))
             {
                 return true;
             }
@@ -166,7 +168,7 @@ public class ResultTable<K, V> implements Serializable
      * 無視するファイルの拡張子セットをセットする
      * @param arg 拡張子セット
      */
-    public void setIgnoreExtensionSet(final Set<String> arg)
+    public void setIgnoreExtensionSet(final Set<AbstractIgnoreEntry> arg)
     {
         ignoreExtensionSet = arg;
     }
@@ -175,7 +177,7 @@ public class ResultTable<K, V> implements Serializable
      * 無視するファイルの拡張子セットを取得する
      * @return 無視するファイルの拡張子セット
      */
-    public Set<String> getIgnoreExtensionSet()
+    public Set<AbstractIgnoreEntry> getIgnoreExtensionSet()
     {
         return ignoreExtensionSet;
     }

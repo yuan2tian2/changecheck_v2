@@ -3,6 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.haradatakahiko.security;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+import com.haradatakahiko.security.ignore.AbstractIgnoreEntry;
+import com.haradatakahiko.security.ignore.FileExtensionIgnoreEntry;
+import com.haradatakahiko.security.ignore.IgnoreType;
 import com.haradatakahiko.security.util.IterableNodeList;
 import com.haradatakahiko.security.util.XmlDocument;
 
@@ -102,7 +105,7 @@ public final class FileChangeChecker
     {
         config = getConfig(configPath);
         hashMaker = configureHashMaker();
-        Set<String> ignoreSet = getIgnoreSet(config);
+        Set<AbstractIgnoreEntry> ignoreSet = getIgnoreSet(config);
         result.setDataFile(getConfigValue("/config/data/file"));
         result.importResult();
         result.setIgnoreExtensionSet(ignoreSet);
@@ -113,9 +116,9 @@ public final class FileChangeChecker
      * @return 対象外ファイルの拡張子セット
      * @throws IOException 読込エラー
      */
-    public Set<String> getIgnoreSet(XmlDocument xml) throws IOException
+    public Set<AbstractIgnoreEntry> getIgnoreSet(XmlDocument xml) throws IOException
     {
-        Set<String> ignoreExtSet = new HashSet<>();
+        Set<AbstractIgnoreEntry> ignoreExtSet = new HashSet<>();
         try
         {
             IterableNodeList nodeList = xml.getNodeList("/config/ignores/extension");
@@ -127,7 +130,7 @@ public final class FileChangeChecker
                     extension = "." + extension;
                 }
                 LOGGER.info(String.format("対象外拡張子：%s", extension));
-                ignoreExtSet.add(extension);
+                ignoreExtSet.add(new FileExtensionIgnoreEntry(extension, IgnoreType.EXTENSION));
             }
         }
         catch(XPathExpressionException e)

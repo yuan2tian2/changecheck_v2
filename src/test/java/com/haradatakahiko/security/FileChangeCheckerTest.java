@@ -3,6 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.haradatakahiko.security;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+import com.haradatakahiko.security.ignore.AbstractIgnoreEntry;
+import com.haradatakahiko.security.ignore.FileExtensionIgnoreEntry;
+import com.haradatakahiko.security.ignore.IgnoreType;
 import com.haradatakahiko.security.util.XmlDocument;
 
 import java.io.IOException;
@@ -23,7 +26,17 @@ public class FileChangeCheckerTest
     public static final String TEST_CONFIG = "example.config.xml";
     
     /** 無視する拡張子配列 */
-    public static final String[] EXPECTS = new String[]{".log", ".class"};
+    public static final AbstractIgnoreEntry[] EXPECTS;
+    //----------------------------------------------------------------------------------------------
+    /**
+     * static initializer
+     */
+    static
+    {
+        FileExtensionIgnoreEntry log = new FileExtensionIgnoreEntry("log", IgnoreType.EXTENSION);
+        FileExtensionIgnoreEntry cls = new FileExtensionIgnoreEntry("class", IgnoreType.EXTENSION);
+        EXPECTS = new AbstractIgnoreEntry[]{log, cls};
+    }
     //----------------------------------------------------------------------------------------------
     /**
      * getInstance()で唯一のインスタンスを取得できること
@@ -94,7 +107,7 @@ public class FileChangeCheckerTest
         final String MESSAGE = "無視する拡張子のセットの大きさが正しいこと";
         FileChangeChecker checker = FileChangeChecker.getInstance();
         checker.setConfigXml(checker.getConfig(TEST_CONFIG));
-        Set<String> ignoreSet = checker.getIgnoreSet(checker.getConfigXml());
+        Set<AbstractIgnoreEntry> ignoreSet = checker.getIgnoreSet(checker.getConfigXml());
         Assert.assertEquals(MESSAGE, EXPECTS.length, ignoreSet.size());
     }
     //----------------------------------------------------------------------------------------------
@@ -107,8 +120,8 @@ public class FileChangeCheckerTest
         final String MESSAGE = "取得した無視する拡張子のセットの内容が正しいこと";
         FileChangeChecker checker = FileChangeChecker.getInstance();
         checker.setConfigXml(checker.getConfig(TEST_CONFIG));
-        Set<String> ignoreSet = checker.getIgnoreSet(checker.getConfigXml());
-        for(String expect : EXPECTS)
+        Set<AbstractIgnoreEntry> ignoreSet = checker.getIgnoreSet(checker.getConfigXml());
+        for(AbstractIgnoreEntry expect : EXPECTS)
         {
             Assert.assertTrue(MESSAGE, ignoreSet.contains(expect));
         }

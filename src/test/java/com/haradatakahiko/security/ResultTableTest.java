@@ -3,6 +3,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.haradatakahiko.security;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+import com.haradatakahiko.security.ignore.AbstractIgnoreEntry;
+import com.haradatakahiko.security.ignore.FileExtensionIgnoreEntry;
+import com.haradatakahiko.security.ignore.IgnoreType;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +25,9 @@ public class ResultTableTest
     public static final String DATA_FILE = "work/testresult%d.ser";
     
     /** テスト用に無視する拡張子Set */
-    public static final Set<String> IGNORE_SET = Set.of("log", "pid");
+    public static final Set<AbstractIgnoreEntry> IGNORE_SET = Set.of(
+        new FileExtensionIgnoreEntry("log", IgnoreType.EXTENSION), 
+        new FileExtensionIgnoreEntry("pid", IgnoreType.EXTENSION));
     
     /** テスト用結果ファイルの番号 */
     public static int count = 0;
